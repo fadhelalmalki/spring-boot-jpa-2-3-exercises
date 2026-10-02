@@ -1,5 +1,6 @@
 package org.fadhel.springbootjpa1exercise.DTO;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,14 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeacherDTOOut {
+public class TeacherResponseDTO {
 
+    private Integer id;
     private String name;
     private Integer age;
     private String email;
     private Double salary;
-    private String area;
-    private String street;
-    private Integer buildingNumber;
-
 }

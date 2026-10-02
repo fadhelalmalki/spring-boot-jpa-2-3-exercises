@@ -1,7 +1,10 @@
 package org.fadhel.springbootjpa1exercise.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Teacher {
+public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,17 +29,11 @@ public class Teacher {
     @Column(nullable = false)
     private Integer age;
 
-    @Column(nullable = false, unique = true)
-    private String email;
-
     @Column(nullable = false)
-    private Double salary;
+    private String major;
 
-    @OneToOne(mappedBy = "teacher", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private Address address;
-
-    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    // Student * ---- * Course
+    @ManyToMany
+    @JsonIgnore
     private Set<Course> courses;
-
 }

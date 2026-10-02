@@ -2,8 +2,9 @@ package org.fadhel.springbootjpa1exercise.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.fadhel.springbootjpa1exercise.DTO.TeacherDTOIn;
-import org.fadhel.springbootjpa1exercise.DTO.TeacherDTOOut;
+import org.fadhel.springbootjpa1exercise.DTO.TeacherDetailsDTO;
+import org.fadhel.springbootjpa1exercise.DTO.TeacherRequestDTO;
+import org.fadhel.springbootjpa1exercise.DTO.TeacherResponseDTO;
 import org.fadhel.springbootjpa1exercise.api.ApiResponse;
 import org.fadhel.springbootjpa1exercise.service.TeacherService;
 import org.springframework.http.ResponseEntity;
@@ -18,32 +19,29 @@ public class TeacherController {
 
     private final TeacherService teacherService;
 
-    @GetMapping("/get")
-    public ResponseEntity<List<TeacherDTOOut>> getAllTeachers() {
+    @GetMapping
+    public ResponseEntity<List<TeacherResponseDTO>> getAllTeachers() {
         return ResponseEntity.status(200).body(teacherService.getAllTeachers());
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<ApiResponse> addTeacher(@Valid @RequestBody TeacherDTOIn teacherDTOIn) {
-        teacherService.addTeacher(teacherDTOIn);
-        return ResponseEntity.status(201).body(new ApiResponse("Teacher added successfully"));
+    @PostMapping
+    public ResponseEntity<TeacherResponseDTO> addTeacher(@Valid @RequestBody TeacherRequestDTO dto) {
+        return ResponseEntity.status(200).body(teacherService.addTeacher(dto));
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse> updateTeacher(@PathVariable Integer id, @Valid @RequestBody TeacherDTOIn teacherDTOIn) {
-        teacherService.updateTeacher(id, teacherDTOIn);
-        return ResponseEntity.status(200).body(new ApiResponse("Teacher updated successfully"));
+    @PutMapping("/{id}")
+    public ResponseEntity<TeacherResponseDTO> updateTeacher(@PathVariable Integer id, @Valid @RequestBody TeacherRequestDTO dto) {
+        return ResponseEntity.status(200).body(teacherService.updateTeacher(id, dto));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteTeacher(@PathVariable Integer id) {
         teacherService.deleteTeacher(id);
         return ResponseEntity.status(200).body(new ApiResponse("Teacher deleted successfully"));
     }
 
-    @GetMapping("/details/{id}")
-    public ResponseEntity<TeacherDTOOut> getTeacherDetails(@PathVariable Integer id) {
-        return ResponseEntity.status(200).body(teacherService.getTeacherDetails(id));
+    @GetMapping("/{teacherId}/details")
+    public ResponseEntity<TeacherDetailsDTO> getTeacherDetails(@PathVariable Integer teacherId) {
+        return ResponseEntity.status(200).body(teacherService.getTeacherDetails(teacherId));
     }
-
 }
