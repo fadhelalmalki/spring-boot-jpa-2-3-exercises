@@ -6,6 +6,7 @@ import org.fadhel.springbootjpa1exercise.DTO.StudentResponseDTO;
 import org.fadhel.springbootjpa1exercise.api.ApiException;
 import org.fadhel.springbootjpa1exercise.model.Course;
 import org.fadhel.springbootjpa1exercise.model.Student;
+import org.fadhel.springbootjpa1exercise.repository.CourseRepository;
 import org.fadhel.springbootjpa1exercise.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
 
     public List<StudentResponseDTO> getAllStudents() {
         return studentRepository.findAll().stream()
@@ -71,6 +73,17 @@ public class StudentService {
 
         Student updated = studentRepository.save(student);
         return mapToStudentResponse(updated);
+    }
+
+    @Transactional
+    public void assignStudentToCourse(Integer studentId, Integer courseId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new ApiException("Student not found with ID: " + studentId));
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ApiException("Course not found with ID: " + courseId));
+
+        student.getCourses().add(course);
+        studentRepository.save(student);
     }
 
     private StudentResponseDTO mapToStudentResponse(Student student) {

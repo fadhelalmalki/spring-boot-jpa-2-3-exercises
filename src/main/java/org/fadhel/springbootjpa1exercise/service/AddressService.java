@@ -22,6 +22,7 @@ public class AddressService {
                 .orElseThrow(() -> new ApiException("Teacher not found with ID: " + dto.getTeacherId()));
 
         Address address = new Address();
+        address.setId(dto.getTeacherId());
         address.setArea(dto.getArea());
         address.setStreet(dto.getStreet());
         address.setBuildingNumber(dto.getBuildingNumber());

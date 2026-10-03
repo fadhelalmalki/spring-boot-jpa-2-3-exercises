@@ -46,4 +46,10 @@ public class StudentController {
             @PathVariable String major) {
         return ResponseEntity.status(200).body(studentService.changeStudentMajorAndDropCourses(studentId, major));
     }
+
+    @PostMapping("/{studentId}/courses/{courseId}")
+    public ResponseEntity<ApiResponse> assignStudentToCourse(@PathVariable Integer studentId, @PathVariable Integer courseId) {
+        studentService.assignStudentToCourse(studentId, courseId);
+        return ResponseEntity.status(200).body(new ApiResponse("Student assigned to course successfully"));
+    }
 }
